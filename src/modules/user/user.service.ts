@@ -1,5 +1,6 @@
 import { User } from "../../infra/models/user.js";
-import type { PasswordHasher } from "./ports/password-hasher.port.js";
+import type { PasswordHasher } from "../../shared/ports/password-hasher.port.js";
+import type { TokenService } from "../../shared/ports/token-service.port.js";
 import type { UserRepository } from "./user.repository.js";
 import type { IUserCreate } from "./user.types.js";
 
@@ -7,6 +8,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hasher: PasswordHasher,
+    private readonly tokenService: TokenService,
   ) {}
 
   async createUser(userData: IUserCreate): Promise<User> {
