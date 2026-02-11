@@ -15,4 +15,13 @@ export class authController {
       return res.status(400).send({ message: e.message });
     }
   };
+
+  me = async (req: FastifyRequest, res: FastifyReply) => {
+    try {
+      return res.status(200).send(req.user?.id);
+    } catch (e: any) {
+      console.log(e.message);
+      return res.status(400).send({ message: e.message });
+    }
+  };
 }
