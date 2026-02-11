@@ -12,5 +12,5 @@ const service = new UserService(repository, hasher, tokenService);
 const controller = new UserController(service);
 
 export const userRoute = (app: FastifyInstance) => {
-  app.post("/user", controller.createUser);
+  app.post("/users", controller.createUser);
 };
