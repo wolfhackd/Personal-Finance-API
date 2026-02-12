@@ -11,8 +11,7 @@ export class TransactionService {
 
   createTransaction = async (
     transactionData: ITransactionCreate,
-    //   ): Promise<Transaction> => {
-  ) => {
+  ): Promise<Transaction> => {
     const user = await this.userRepository.findUserById(transactionData.userId);
 
     if (!user) {
@@ -24,11 +23,9 @@ export class TransactionService {
     const newTransaction =
       await this.transactionRepository.createTransaction(transaction);
 
-    // const persistedTransaction = Transaction.restore(newTransaction);
+    const persistedTransaction = Transaction.restore(newTransaction);
 
-    // return persistedTransaction;
-
-    return newTransaction;
+    return persistedTransaction;
   };
 
   getTransactions = async (userId: string) => {
