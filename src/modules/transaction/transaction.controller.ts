@@ -11,9 +11,7 @@ export class TransactionController {
   createTransaction = async (req: FastifyRequest, reply: FastifyReply) => {
     try {
       const userId = req.user?.id;
-      if (!userId) {
-        return reply.status(401).send({ message: "User not authenticated" });
-      }
+
       const validatedData = transactionCreateInput.parse({
         ...(req.body as object),
         userId,
@@ -26,6 +24,17 @@ export class TransactionController {
       }
 
       return reply.status(200).send({ message: "Transaction created" });
+    } catch (e: any) {
+      console.log(e.message);
+      return reply.status(400).send({ message: e.message });
+    }
+  };
+
+  getTransactions = async (req: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const userId = req.user!.id;
+      const transactions = await this.service.getTransactions(userId);
+      return reply.status(200).send(transactions);
     } catch (e: any) {
       console.log(e.message);
       return reply.status(400).send({ message: e.message });

@@ -30,4 +30,8 @@ export class TransactionService {
 
     return newTransaction;
   };
+
+  getTransactions = async (userId: string) => {
+    return this.transactionRepository.findTransactionsByUserId(userId);
+  };
 }

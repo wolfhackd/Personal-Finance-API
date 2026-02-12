@@ -18,6 +18,6 @@ export const transactionRoute = (app: FastifyInstance) => {
   app.addHook("preHandler", auth);
 
   app.post("/transaction", controller.createTransaction);
-  // app.get("/transaction", controller.getTransactions);
+  app.get("/transaction", controller.getTransactions);
   // app.get("/balance",controller.balance);
 };
