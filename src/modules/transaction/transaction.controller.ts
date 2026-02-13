@@ -1,8 +1,5 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import {
-  transactionCreateInput,
-  type ITransactionCreate,
-} from "./transaction.types.js";
+import { transactionCreateInput } from "./transaction.types.js";
 import type { TransactionService } from "./transaction.service.js";
 
 export class TransactionController {
@@ -35,6 +32,17 @@ export class TransactionController {
       const userId = req.user!.id;
       const transactions = await this.service.getTransactions(userId);
       return reply.status(200).send(transactions);
+    } catch (e: any) {
+      console.log(e.message);
+      return reply.status(400).send({ message: e.message });
+    }
+  };
+
+  balance = async (req: FastifyRequest, reply: FastifyReply) => {
+    try {
+      const userId = req.user!.id;
+      const balance = await this.service.balance(userId);
+      return reply.status(200).send(balance);
     } catch (e: any) {
       console.log(e.message);
       return reply.status(400).send({ message: e.message });

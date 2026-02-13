@@ -31,4 +31,16 @@ export class TransactionService {
   getTransactions = async (userId: string) => {
     return this.transactionRepository.findTransactionsByUserId(userId);
   };
+
+  balance = async (userId: string) => {
+    const transactions =
+      await this.transactionRepository.findTransactionsByUserId(userId);
+    const balance = transactions.reduce((acc, transaction) => {
+      if (transaction.type === "INCOME") {
+        return acc + transaction.amount;
+      }
+      return acc - transaction.amount;
+    }, 0);
+    return balance;
+  };
 }

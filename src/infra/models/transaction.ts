@@ -1,8 +1,3 @@
-// export enum TransactionType {
-//   INCOME = "INCOME",
-//   EXPENSE = "EXPENSE",
-// }
-
 import type { TransactionType } from "../../generated/prisma/enums.js";
 
 export interface TransactionCreateProps {
