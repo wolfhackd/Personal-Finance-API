@@ -45,11 +45,11 @@ docker-compose up --build -d
 
 ## 📊 Endpoints
 
-POST /users
-POST /login
-GET /transactions
-POST /transactions
-GET /balance
+- POST /users
+- POST /login
+- GET /transactions
+- POST /transactions
+- GET /balance
 
 ## 👨‍💻 Autor
 
@@ -58,4 +58,5 @@ Backend Developer
 📍 Pernambuco
 🔗 LinkedIn
 🔗 GitHub
+
 
