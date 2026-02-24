@@ -2,7 +2,6 @@ import fastify from "fastify";
 import fastifyCors from "@fastify/cors";
 import { userRoute } from "./modules/user/user.route.js";
 import { authRoute } from "./modules/auth/auth.route.js";
-import { tr } from "zod/locales";
 import { transactionRoute } from "./modules/transaction/transaction.route.js";
 
 const app = fastify();
@@ -14,6 +13,6 @@ app.register(fastifyCors, {
 //Routes
 app.register(authRoute);
 app.register(userRoute);
-app.register(transactionRoute);
+app.register(transactionRoute, { prefix: "transactions" });
 
 export { app };

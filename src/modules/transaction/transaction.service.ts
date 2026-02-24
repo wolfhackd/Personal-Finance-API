@@ -32,6 +32,20 @@ export class TransactionService {
     return this.transactionRepository.findTransactionsByUserId(userId);
   };
 
+  getTransactionById = async (id: string, userId: string) => {
+    const transaction =
+      await this.transactionRepository.findTransactionById(id);
+
+    if (!transaction) {
+      throw new Error("Transaction not found");
+    }
+
+    if (transaction.userId !== userId) {
+      throw new Error("Not allowed");
+    }
+    return this.transactionRepository.findTransactionById(id);
+  };
+
   balance = async (userId: string) => {
     const transactions =
       await this.transactionRepository.findTransactionsByUserId(userId);

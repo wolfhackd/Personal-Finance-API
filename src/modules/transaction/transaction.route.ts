@@ -17,7 +17,10 @@ const auth = authMiddleware(tokenService);
 export const transactionRoute = (app: FastifyInstance) => {
   app.addHook("preHandler", auth);
 
-  app.post("/transaction", controller.createTransaction);
-  app.get("/transaction", controller.getTransactions);
+  app.post("/", controller.createTransaction);
+  app.get("/", controller.getTransactions);
+  app.get("/:id", controller.getTransactionById);
+
+  //Acho que o balance poderia ficar em user
   app.get("/balance", controller.balance);
 };

@@ -38,6 +38,26 @@ export class TransactionController {
     }
   };
 
+  getTransactionById = async (
+    req: FastifyRequest<{ Params: { id: string } }>,
+    reply: FastifyReply,
+  ) => {
+    try {
+      const userId = req.user!.id;
+
+      const transactionId = req.params.id;
+      const transaction = await this.service.getTransactionById(
+        transactionId,
+        userId,
+      );
+
+      return reply.status(200).send(transaction);
+    } catch (e: any) {
+      console.log(e.message);
+      return reply.status(400).send({ message: e.message });
+    }
+  };
+
   balance = async (req: FastifyRequest, reply: FastifyReply) => {
     try {
       const userId = req.user!.id;

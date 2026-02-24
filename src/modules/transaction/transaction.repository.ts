@@ -10,6 +10,10 @@ export class TransactionRepository {
     return this.database.transaction.findMany({ where: { userId } });
   }
 
+  findTransactionById(id: string) {
+    return this.database.transaction.findUnique({ where: { id } });
+  }
+
   createTransaction(transaction: Transaction) {
     return this.database.transaction.create({
       data: {

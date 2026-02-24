@@ -50,6 +50,7 @@ docker-compose up --build -d
 - GET /transactions
 - POST /transactions
 - GET /balance
+- GET /transactions/:id
 
 ## 👨‍💻 Autor
 
@@ -58,5 +59,3 @@ Backend Developer
 📍 Pernambuco
 🔗 LinkedIn
 🔗 GitHub
-
-
