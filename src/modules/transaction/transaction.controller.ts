@@ -1,5 +1,9 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
-import { transactionCreateInput } from "./transaction.types.js";
+import {
+  GetTransactionsQueryParamsInput,
+  transactionCreateInput,
+  type GetTransactionsQueryParams,
+} from "./transaction.types.js";
 import type { TransactionService } from "./transaction.service.js";
 
 export class TransactionController {
@@ -27,10 +31,15 @@ export class TransactionController {
     }
   };
 
-  getTransactions = async (req: FastifyRequest, reply: FastifyReply) => {
+  getTransactions = async (
+    req: FastifyRequest<{ Querystring: GetTransactionsQueryParams }>,
+    reply: FastifyReply,
+  ) => {
     try {
+      const filters = GetTransactionsQueryParamsInput.parse(req.query);
+
       const userId = req.user!.id;
-      const transactions = await this.service.getTransactions(userId);
+      const transactions = await this.service.getTransactions(userId, filters);
       return reply.status(200).send(transactions);
     } catch (e: any) {
       console.log(e.message);

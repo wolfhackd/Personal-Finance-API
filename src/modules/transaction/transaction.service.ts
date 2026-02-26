@@ -1,7 +1,10 @@
 import { Transaction } from "../../infra/models/transaction.js";
 import type { UserRepository } from "../user/user.repository.js";
 import type { TransactionRepository } from "./transaction.repository.js";
-import type { ITransactionCreate } from "./transaction.types.js";
+import type {
+  ITransactionCreate,
+  ITransactionFilter,
+} from "./transaction.types.js";
 
 export class TransactionService {
   constructor(
@@ -28,8 +31,8 @@ export class TransactionService {
     return persistedTransaction;
   };
 
-  getTransactions = async (userId: string) => {
-    return this.transactionRepository.findTransactionsByUserId(userId);
+  getTransactions = async (userId: string, filters?: ITransactionFilter) => {
+    return this.transactionRepository.findTransactionsByUserId(userId, filters);
   };
 
   getTransactionById = async (id: string, userId: string) => {
