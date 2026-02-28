@@ -7,9 +7,6 @@ import type { ITransactionFilter } from "./transaction.types.js";
 export class TransactionRepository {
   constructor(private readonly database: PrismaClient = prisma) {}
 
-  //Tenho que arrumar a questão da data se so for passada uma data pesquisar so naquela data
-  //se for passada uma data inicial e uma data final pesquisar no intervalo
-
   findTransactionsByUserId(userId: string, filters?: ITransactionFilter) {
     const { date, endDate } = filters ?? {};
 

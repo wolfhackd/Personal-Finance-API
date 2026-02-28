@@ -19,8 +19,11 @@ export const transactionRoute = (app: FastifyInstance) => {
 
   app.post("/", controller.createTransaction);
   app.get("/", controller.getTransactions);
-  app.get("/:id", controller.getTransactionById);
+  // app.get("/report/:date", controller.report);
+  app.get("/report", controller.report);
 
   //Acho que o balance poderia ficar em user
   app.get("/balance", controller.balance);
+
+  app.get("/:id", controller.getTransactionById);
 };

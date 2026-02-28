@@ -77,4 +77,23 @@ export class TransactionController {
       return reply.status(400).send({ message: e.message });
     }
   };
+
+  report = async (
+    req: FastifyRequest<{ Querystring: { date: string } }>,
+    reply: FastifyReply,
+  ) => {
+    try {
+      const userId = req.user!.id;
+      //Importante: Resolver problema de adiantamento de datas por conta do horário do servidor
+      //Caso o date não venha use o mes atual
+      const date = req.query.date || new Date().toISOString().split("T")[0];
+      console.log(date);
+
+      const report = await this.service.report(userId);
+      return reply.status(200).send(report);
+    } catch (e: any) {
+      console.log(e.message);
+      return reply.status(400).send({ message: e.message });
+    }
+  };
 }
