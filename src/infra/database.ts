@@ -36,7 +36,7 @@ export class Database {
 
     try {
       console.log("Connecting to the database...");
-      await this.prisma.$connect();
+      await this.prisma.$queryRaw`SELECT 1`;
       this.isConnected = true;
       console.log("Database connected successfully");
     } catch (e) {
