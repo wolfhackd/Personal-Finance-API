@@ -25,7 +25,7 @@ export class TransactionRepository {
       };
     }
 
-    console.log("Filtro final:", where.date);
+    // console.log("Filtro final:", where.date);
 
     return prisma.transaction.findMany({ where });
   }

@@ -7,54 +7,6 @@ import type {
   ITransactionFilter,
 } from "./transaction.types.js";
 
-const dadosTeste: any = {
-  mes: "Março 2024",
-  lucros: 54250.0,
-  despesas: 31180.5,
-  itens: [
-    // --- ENTRADAS (LUCROS) ---
-    {
-      descricao: "Mensalidades SaaS (Plano Pro)",
-      valor: 32500.0,
-      tipo: "lucro",
-    },
-    {
-      descricao: "Consultoria Implementação API",
-      valor: 12000.0,
-      tipo: "lucro",
-    },
-    { descricao: "Venda de Licenças Adicionais", valor: 5750.0, tipo: "lucro" },
-    { descricao: "Suporte Técnico Premium", valor: 4000.0, tipo: "lucro" },
-
-    // --- SAÍDAS (DESPESAS FIXAS) ---
-    {
-      descricao: "Folha de Pagamento (Time Dev)",
-      valor: 18500.0,
-      tipo: "despesa",
-    },
-    {
-      descricao: "Aluguel Escritório / Coworking",
-      valor: 3200.0,
-      tipo: "despesa",
-    },
-    { descricao: "Assinatura Adobe/JetBrains", valor: 450.0, tipo: "despesa" },
-    { descricao: "Contabilidade Mensal", valor: 800.0, tipo: "despesa" },
-
-    // --- SAÍDAS (DESPESAS VARIÁVEIS / INFRA) ---
-    {
-      descricao: "Infraestrutura AWS (Produção)",
-      valor: 4250.5,
-      tipo: "despesa",
-    },
-    { descricao: "Google Ads (Tráfego Pago)", valor: 2500.0, tipo: "despesa" },
-    {
-      descricao: "Taxas de Processamento (Stripe)",
-      valor: 1480.0,
-      tipo: "despesa",
-    },
-  ],
-};
-
 export class TransactionService {
   constructor(
     private readonly transactionRepository: TransactionRepository,
@@ -110,21 +62,41 @@ export class TransactionService {
     return balance;
   };
 
-  //Chamo o repository pra pedir as informações que eu preciso
-  //Chamo o service pra calcular o que eu preciso
-  //e por fim chamo o meu service de geração de pdf base64
-  //retorno isso para o controller
   //e depois tenho que interpretar o pdf no front end
 
   //Regras de negocio
   //Só funciona no mês a mês (Por enquanto)
-  //Devo receber uma data inicial do front end
 
   //Obs: eu deveria fazer um para apenas retornar as informações separadas tbm
 
-  report = async (userId: string) => {
-    // return this.transactionRepository.findTransactionsByUserId(userId);
-    // return "teste funcionando";
+  report = async (userId: string, month: number, year: number) => {
+    console.log(month);
+    //esse cara pode receber uma data também
+    const data =
+      await this.transactionRepository.findTransactionsByUserId(userId);
+
+    const totals = data.reduce(
+      (acc, d) => {
+        if (d.type === "EXPENSE") acc.expenses += d.amount;
+        if (d.type === "INCOME") acc.incomes += d.amount;
+        return acc;
+      },
+      { expenses: 0, incomes: 0 },
+    );
+
+    const dadosTeste = {
+      month,
+      ...totals,
+      itens: data.map((d) => ({
+        title: d.title,
+        amount: d.amount,
+        type: d.type as "EXPENSE" | "INCOME",
+      })),
+    };
+    //tenho que da um clear nessa função
+    //Tenho que realizar uma abstração de dados pra se ajustar ao que eu preciso
     return Base64PdfGenerator(dadosTeste);
+
+    // return date;
   };
 }

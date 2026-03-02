@@ -5,6 +5,7 @@ import {
   type GetTransactionsQueryParams,
 } from "./transaction.types.js";
 import type { TransactionService } from "./transaction.service.js";
+import { dateFormatter } from "../../shared/utils/date-formatter.js";
 
 export class TransactionController {
   constructor(private readonly service: TransactionService) {}
@@ -85,12 +86,19 @@ export class TransactionController {
     try {
       const userId = req.user!.id;
       //Importante: Resolver problema de adiantamento de datas por conta do horário do servidor
-      //Caso o date não venha use o mes atual
-      const date = req.query.date || new Date().toISOString().split("T")[0];
-      console.log(date);
 
-      const report = await this.service.report(userId);
+      const { date } = req.query;
+
+      const formattedDate = dateFormatter(date!);
+
+      const report = await this.service.report(
+        userId,
+        formattedDate.month,
+        formattedDate.year,
+      );
       return reply.status(200).send(report);
+
+      // return reply.status(200).send(formattedDate);
     } catch (e: any) {
       console.log(e.message);
       return reply.status(400).send({ message: e.message });

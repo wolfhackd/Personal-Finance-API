@@ -1,11 +1,10 @@
 import puppeteer from "puppeteer";
-import fs from "fs";
 
 interface DateReport {
-  mes: string;
-  lucros: number;
-  despesas: number;
-  itens: Array<{ descricao: string; valor: number; tipo: "lucro" | "despesa" }>;
+  month: number | string;
+  expenses: number;
+  incomes: number;
+  itens: Array<{ title: string; amount: number; type: "EXPENSE" | "INCOME" }>;
 }
 
 export async function Base64PdfGenerator(dados: DateReport) {
@@ -37,17 +36,17 @@ export async function Base64PdfGenerator(dados: DateReport) {
           <body>
               <div class="header">
                   <h1>Relatório de Fluxo de Caixa</h1>
-                  <p>Período: ${dados.mes}</p>
+                  <p>Período: ${dados.month}</p>
               </div>
 
               <div class="resumo">
                   <div class="card lucro">
                       <h3>Receitas</h3>
-                      <p>R$ ${dados.lucros.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
+                      <p>R$ ${dados.incomes.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
                   </div>
                   <div class="card despesa">
                       <h3>Despesas</h3>
-                      <p>R$ ${dados.despesas.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
+                      <p>R$ ${dados.expenses.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</p>
                   </div>
               </div>
 
@@ -64,10 +63,10 @@ export async function Base64PdfGenerator(dados: DateReport) {
                         .map(
                           (item) => `
                           <tr>
-                              <td>${item.descricao}</td>
-                              <td>${item.tipo === "lucro" ? "Receita" : "Gasto"}</td>
-                              <td class="${item.tipo === "lucro" ? "v-lucro" : "v-despesa"}">
-                                  R$ ${item.valor.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                              <td>${item.title}</td>
+                              <td>${item.type === "EXPENSE" ? "Receita" : "Gasto"}</td>
+                              <td class="${item.type === "EXPENSE" ? "v-lucro" : "v-despesa"}">
+                                  R$ ${item.amount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
                               </td>
                           </tr>
                       `,
@@ -77,7 +76,7 @@ export async function Base64PdfGenerator(dados: DateReport) {
               </table>
 
               <div class="footer">
-                  Saldo Final: R$ ${(dados.lucros - dados.despesas).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                  Saldo Final: R$ ${(dados.incomes - dados.expenses).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
               </div>
           </body>
       </html>
@@ -95,24 +94,5 @@ export async function Base64PdfGenerator(dados: DateReport) {
 
   await browser.close();
 
-  //   @ts-ignore
   return base64String;
 }
-
-const dadosTeste: DateReport = {
-  mes: "Março 2024",
-  lucros: 50000,
-  despesas: 32000,
-  itens: [
-    { descricao: "Venda Licença A", valor: 30000, tipo: "lucro" },
-    { descricao: "Consultoria B", valor: 20000, tipo: "lucro" },
-    { descricao: "Servidores Cloud", valor: 15000, tipo: "despesa" },
-    { descricao: "Folha Pagamento", valor: 17000, tipo: "despesa" },
-  ],
-};
-
-Base64PdfGenerator(dadosTeste).then((b64) => {
-  console.log("PDF Gerado!");
-  console.log("Começa com JVBER?", b64.startsWith("JVBER"));
-  fs.writeFileSync("teste.pdf", Buffer.from(b64, "base64")); // Opcional: salva arquivo real
-});
