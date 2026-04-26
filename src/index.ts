@@ -16,13 +16,3 @@ async function main() {
 }
 
 main();
-
-// process.on("SIGINT", async () => {
-//   await database.disconnect();
-//   process.exit(0);
-// });
-
-// process.on("SIGTERM", async () => {
-//   await database.disconnect();
-//   process.exit(0);
-// });
