@@ -21,4 +21,5 @@ export const reportRoute = (app: FastifyInstance) => {
     app.addHook("preHandler", auth);
 
     app.get("/", controller.getMonthlyReport);
+    app.get("/forecast", controller.getForecast);
 };

@@ -16,4 +16,15 @@ export class ReportController {
             return reply.status(400).send({ message: e.message });
         }
     };
+
+    getForecast = async (req: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const id = req.user?.id as string;
+            const forecast = await this.service.getForecast(id);
+            return reply.status(200).send(forecast);
+        } catch (e: any) {
+            console.log(e.message);
+            return reply.status(400).send({ message: e.message });
+        }
+    };
 }

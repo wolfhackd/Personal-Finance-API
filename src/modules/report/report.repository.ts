@@ -14,28 +14,28 @@ export class ReportRepository {
         select: { date: true }
     });
 
-    if (!lastTransaction) return [];
+        if (!lastTransaction) return [];
 
-    const lastDate = lastTransaction.date;
+        const lastDate = lastTransaction.date;
 
-    const startDate = new Date(lastDate.getFullYear(), lastDate.getMonth() - 10, 1);
+        const startDate = new Date(lastDate.getFullYear(), lastDate.getMonth() - 10, 1);
 
-    
-    const data = await this.database.transaction.findMany({
-        where: {
-            userId: id,
-            date: {
-                gte: startDate,
-                lte: lastDate 
+        
+        const data = await this.database.transaction.findMany({
+            where: {
+                userId: id,
+                date: {
+                    gte: startDate,
+                    lte: lastDate 
+                },
+                type: PrismaTransactionType.EXPENSE
             },
-            type: PrismaTransactionType.EXPENSE
-        },
-        orderBy: {
-            date: 'desc'
-        }
-    });
+            orderBy: {
+                date: 'desc'
+            }
+        });
 
-    return data;
+        return data;
     }
     
 }

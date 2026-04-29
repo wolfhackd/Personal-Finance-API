@@ -13,6 +13,7 @@ const envSchema = z.object({
   DATABASE_URL: z.string(),
   PORT: z.coerce.number().default(3333),
   JWT_SECRET: z.string(),
+  FORECAST_SERVICE_URL: z.string().url().optional(),
 });
 
 const _env = envSchema.safeParse(process.env);
