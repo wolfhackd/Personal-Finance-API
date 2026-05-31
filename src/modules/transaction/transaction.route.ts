@@ -66,7 +66,7 @@ export const transactionRoute = (app: FastifyInstance) => {
         tags: ["Transactions"],
         summary: "Listar transações",
         description:
-          "Lista transações do usuário. Opcionalmente filtra por intervalo de datas (UTC).",
+          "Lista transações do usuário(UserID do token). Opcionalmente filtra por intervalo de datas (UTC).",
         security: securityBearer,
         querystring: {
           type: "object",

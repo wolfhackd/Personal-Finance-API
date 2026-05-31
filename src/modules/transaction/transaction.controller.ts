@@ -36,6 +36,7 @@ export class TransactionController {
     req: FastifyRequest<{ Querystring: GetTransactionsQueryParams }>,
     reply: FastifyReply,
   ) => {
+    //adicionar paginação e ordenação depois, por enquanto só filtro mesmo
     try {
       const filters = GetTransactionsQueryParamsInput.parse(req.query);
 
@@ -98,7 +99,6 @@ export class TransactionController {
       );
       return reply.status(200).send(report);
 
-      // return reply.status(200).send(formattedDate);
     } catch (e: any) {
       console.log(e.message);
       return reply.status(400).send({ message: e.message });

@@ -2,16 +2,12 @@ import type { UserRepository } from "../user/user.repository.js";
 import type { ReportRepository } from "./report.repository.js";
 import { env } from "../../config/env.js";
 
-
-
 export class ReportService {
-
 
     constructor (
         private readonly reportRepository: ReportRepository,
         private readonly userRepository: UserRepository
     ) {}
-
 
     reportMonthly = async (id: string) => {
 
@@ -32,8 +28,6 @@ export class ReportService {
             acc[month][category] += transaction.amount;
             return acc;
         }, {});
-
-        //Posso salvar isso no banco e atualizar sempre que vier uma nova transação
 
         return monthlyExpenses
     }
